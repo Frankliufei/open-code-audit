@@ -1,0 +1,20 @@
+version: 1
+
+budgets:
+  changed_business_modules:
+    warning: 2
+    requires_justification: 3
+
+  cognitive_complexity_delta:
+    warning: 5
+    requires_justification: 10
+
+  extension_core_files_modified:
+    warning: 2
+    requires_justification: 4
+
+  private_imports:
+    block: 1
+
+  dependency_cycles:
+    block: 1

@@ -1,0 +1,25 @@
+version: 1
+
+rules:
+  - id: DEP-DIRECTION-001
+    description: Domain code must not depend on application or infrastructure.
+    source: domain
+    forbidden_targets:
+      - application
+      - infrastructure
+    severity: block
+
+  - id: DEP-PUBLIC-001
+    description: Cross-module imports must use public paths.
+    cross_module: true
+    allowed_target_visibility:
+      - public
+    severity: block
+
+  - id: DEP-CYCLE-001
+    description: Module dependency graph must remain acyclic.
+    severity: block
+
+  - id: DEP-EXCEPTION-001
+    description: Exceptions must be declared in architecture/exceptions.yaml.
+    severity: requires_justification

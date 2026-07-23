@@ -1,0 +1,14 @@
+version: 1
+
+exceptions: []
+
+# Example:
+# exceptions:
+#   - id: EX-2026-001
+#     rule_id: DEP-PUBLIC-001
+#     source_module: application
+#     target_module: infrastructure
+#     path: app/application/legacy_bridge.py
+#     reason: Temporary bridge during migration.
+#     owner: architecture-review
+#     expires_on: 2026-09-30

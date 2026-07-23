@@ -1,0 +1,70 @@
+version: 1
+
+rules:
+  - id: BOUNDARY-001
+    name: Cross-module private import
+    category: module_boundary
+    severity: block
+    detection: deterministic
+    condition:
+      cross_module: true
+      target_visibility:
+        - internal
+        - private
+
+  - id: BOUNDARY-002
+    name: Cross-module ORM dependency
+    category: module_boundary
+    severity: block
+    detection: deterministic
+    condition:
+      cross_module: true
+      target_kind:
+        - orm_model
+        - repository
+
+  - id: DEP-001
+    name: Circular module dependency
+    category: dependency
+    severity: block
+    detection: deterministic
+
+  - id: OWNERSHIP-001
+    name: Foreign state ownership
+    category: state_ownership
+    severity: block
+    detection: hybrid
+
+  - id: SRP-001
+    name: Multiple responsibility clusters
+    category: single_responsibility
+    severity: warning
+    detection: semantic
+    thresholds:
+      responsibility_clusters_warning: 2
+      responsibility_clusters_block: 4
+
+  - id: OCP-001
+    name: High extension cost
+    category: open_closed
+    severity: warning
+    detection: hybrid
+    thresholds:
+      warning_existing_core_files: 2
+      requires_justification_existing_core_files: 4
+
+  - id: CHANGE-001
+    name: Excessive module spread
+    category: change_scope
+    severity: requires_justification
+    detection: deterministic
+    thresholds:
+      changed_business_modules: 3
+
+  - id: COMPLEXITY-001
+    name: Unexplained complexity increase
+    category: complexity_budget
+    severity: warning
+    detection: deterministic
+    thresholds:
+      cognitive_complexity_delta: 5

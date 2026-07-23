@@ -1,0 +1,64 @@
+version: 1
+
+# Replace these starter modules with the repository's real module map.
+# Keep project-specific architecture here, not inside the reusable skill.
+modules:
+  core:
+    paths:
+      - app/core/**
+      - src/core/**
+    owns:
+      - configuration
+      - shared_primitives
+    public_paths:
+      - app/core/public/**
+      - src/core/public/**
+    may_depend_on: []
+    forbidden_dependencies: []
+
+  application:
+    paths:
+      - app/application/**
+      - src/application/**
+    owns:
+      - use_cases
+      - orchestration
+    public_paths:
+      - app/application/public/**
+      - src/application/public/**
+    may_depend_on:
+      - core.public
+      - domain.public
+    forbidden_dependencies:
+      - infrastructure.internal
+
+  domain:
+    paths:
+      - app/domain/**
+      - src/domain/**
+    owns:
+      - domain_entities
+      - business_rules
+    public_paths:
+      - app/domain/public/**
+      - src/domain/public/**
+    may_depend_on:
+      - core.public
+    forbidden_dependencies:
+      - application
+      - infrastructure
+
+  infrastructure:
+    paths:
+      - app/infrastructure/**
+      - src/infrastructure/**
+    owns:
+      - external_integrations
+      - persistence_adapters
+    public_paths:
+      - app/infrastructure/public/**
+      - src/infrastructure/public/**
+    may_depend_on:
+      - core.public
+      - domain.public
+    forbidden_dependencies: []

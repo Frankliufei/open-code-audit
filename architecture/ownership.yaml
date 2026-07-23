@@ -1,0 +1,41 @@
+version: 1
+
+# State, capability, and public contract ownership. Fill this with real project
+# concepts before using the design review as a release gate.
+ownership:
+  configuration:
+    owner_module: core
+    allowed_writers:
+      - core
+    allowed_readers:
+      - core
+      - application
+      - domain
+      - infrastructure
+
+  shared_primitives:
+    owner_module: core
+    allowed_writers:
+      - core
+    allowed_readers:
+      - core
+      - application
+      - domain
+      - infrastructure
+
+  domain_entities:
+    owner_module: domain
+    allowed_writers:
+      - domain
+    allowed_readers:
+      - domain
+      - application
+      - infrastructure
+
+  external_integrations:
+    owner_module: infrastructure
+    allowed_writers:
+      - infrastructure
+    allowed_readers:
+      - application
+      - infrastructure
