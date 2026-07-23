@@ -1,4 +1,0 @@
-interface:
-  display_name: "Software Design Review"
-  short_description: "Review design risks in code changes."
-  default_prompt: "Use $software-design-review to review the current code changes for architecture and design risks."
