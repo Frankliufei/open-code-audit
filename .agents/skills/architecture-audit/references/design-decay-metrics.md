@@ -160,18 +160,54 @@ principles:
 signal: "复杂度、依赖数量、职责数量同时偏高，是优先审计热点。"
 ```
 
-## 报告格式
+## 报告使用方式
+
+这些指标不要直接作为报告主体。先把超阈值项归入原则，再写成人能执行的问题卡片。
+
+推荐映射：
 
 ```yaml
-principle_findings:
-  - principle: SRP
-    metric: responsibility_kinds_per_file
-    threshold: "< 3"
-    actual: 5
-    verdict: high
-    evidence:
-      - "file contains route handlers, db commits, permission checks, file export, approval transitions"
-      - "lizard: high CCN handlers in the same file"
-    risk: "一个业务变化会同时牵动 HTTP、事务、权限和文件导出逻辑。"
-    confidence: high
+principle_mapping:
+  模块边界:
+    metrics:
+      - concrete_infrastructure_imports
+      - module_fanout
+      - module_fanin_without_stable_contract
+  单一职责:
+    metrics:
+      - responsibility_kinds_per_file
+      - hotspot_score
+  依赖倒置:
+    metrics:
+      - concrete_infrastructure_imports
+      - module_fanin_without_stable_contract
+  开闭原则:
+    metrics:
+      - variation_branch_density
+  接口隔离:
+    metrics:
+      - consumer_method_usage_ratio
+      - public_interface_ratio
+  封装度:
+    metrics:
+      - public_interface_ratio
+      - module_fanin_without_stable_contract
+```
+
+问题卡片中的证据字段可以引用指标：
+
+```yaml
+evidence:
+  metrics:
+    - metric: responsibility_kinds_per_file
+      threshold: "< 3"
+      actual: 5
+      verdict: high
+    - metric: hotspot_score
+      threshold: "< 40"
+      actual: 58
+      verdict: high
+  tools:
+    - "lizard: high CCN handlers in the same file"
+    - "grimp: api -> db"
 ```
