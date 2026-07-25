@@ -317,7 +317,7 @@ The wrapper creates:
 ├── collect-diff.json
 ├── analyze-imports.json
 ├── extension-cost.json
-├── codebase-memory-index.json
+├── code-review-graph-status.txt
 ├── code-quality-audit/
 ├── open-code-review.txt
 └── next-step.md

@@ -13,7 +13,7 @@ description: 用于全仓架构审计，发现模块边界、依赖方向、所�
 
 审计需要这些工具。缺失时先安装或补齐，再继续完整审计：
 
-- `codebase-memory-mcp`
+- `code-review-graph`
 - `grimp`
 - `import-linter`
 - `semgrep`
@@ -26,7 +26,7 @@ description: 用于全仓架构审计，发现模块边界、依赖方向、所�
 
 工具分工：
 
-- `codebase-memory-mcp`：主代码图谱，优先用于索引仓库、读取架构概览、搜索符号、追踪调用、读取关键源码片段。
+- `code-review-graph`：主代码图谱，优先用于读取架构概览、查询调用和依赖、分析变更影响、收集审计上下文。
 - `grimp` / `pydeps`：验证模块 import 边、依赖方向和循环。
 - `import-linter`：验证已经明确的依赖契约；没有配置时，输出建议契约。
 - `semgrep`：查找架构模式，例如路由层提交事务、直接返回文件、文件系统写入、直接调用外部进程、疑似密钥暴露。
@@ -39,13 +39,16 @@ description: 用于全仓架构审计，发现模块边界、依赖方向、所�
 
 ### 1. 建立代码事实
 
-优先使用 `codebase-memory-mcp`：
+优先使用 `code-review-graph`：
 
-1. 索引目标仓库。
-2. 读取架构概览。
-3. 搜索路由、服务、模型、仓储、启动入口、外部系统调用。
-4. 对热点符号追踪 inbound / outbound 调用。
-5. 对异常依赖、复杂流程、边界跨越读取源码片段。
+1. 运行 `code-review-graph status`，确认图谱存在、文件数和节点数非零，并且 HEAD 与当前仓库一致。
+2. 首次仓库、缺失图谱、文件数或节点数为 0、或 `Last updated: never` 时，运行 `code-review-graph build`。
+3. 分支切换、HEAD 变化或代码发生明显变更后，运行 `code-review-graph update`。
+4. 使用 `get_architecture_overview_tool` 读取模块、社区、耦合和项目结构。
+5. 使用 `query_graph_tool` 查询 imports、importers、callers、callees、tests 和文件摘要。
+6. 使用 `detect_changes_tool`、`get_impact_radius_tool`、`get_review_context_tool` 分析变更风险、影响半径和审计上下文。
+7. 名称不确定或需要多跳追踪时，使用 `semantic_search_nodes_tool` 或 `traverse_graph_tool`。
+8. 对异常依赖、复杂流程、边界跨越读取源码片段。
 
 同时排除明显非生产代码对结论的干扰，例如缓存、构建产物、虚拟环境、生成报告、审计证据目录。若这些内容污染代码图谱，本身可以作为治理问题报告。
 
@@ -73,7 +76,7 @@ inferred_modules:
       - HTTP 路由
       - 请求响应适配
     evidence:
-      - "codebase-memory: 路由定义集中在 backend/app/api"
+      - "code-review-graph: 路由定义集中在 backend/app/api"
 ```
 
 ### 3. 分析依赖关系
